@@ -32,17 +32,15 @@
 
 <body>
     <div id="ton-connect"></div>
-    <!-- <div id="status"></div> -->
+    <div id="status"></div>
 
     <script>
-        // const statusElement = document.getElementById('status');
-        // const connectButton = document.getElementById('ton-connect');
 
         // Function to update status
-        // function updateStatus(message) {
-        //     statusElement.textContent = message;
-        //     console.log(message);
-        // }
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+            console.log(message);
+        }
 
         // Initialize TonConnect
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -54,10 +52,10 @@
         });
 
         // Log the current wallet connection status
-        updateStatus(`Initial connection status: ${tonConnect.connected}`);
+        updateStatus(`Initial connection status: ${tonConnectUI.connected}`);
 
         // Handle wallet connections
-        tonConnect.onStatusChange(wallet => {
+        tonConnectUI.onStatusChange(wallet => {
             if (wallet) {
                 updateStatus(`Wallet connected: ${wallet.account.address}`);
                 // Send data to Telegram WebApp if available
@@ -108,6 +106,15 @@
         } else {
             updateStatus('Not running in Telegram WebApp');
         }
+
+        // Error handling
+        tonConnectUI.onConnectionRestored = () => {
+            updateStatus('Connection restored');
+        };
+
+        tonConnectUI.onConnectionError = (error) => {
+            updateStatus(`Connection error: ${error.message}`);
+        };
     </script>
 </body>
 
