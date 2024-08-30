@@ -83,18 +83,18 @@
     </style>
 </head>
 <body>
-    <button id="ton-connect">Bien Connect TON Wallet</button>
-    <div id="status"></div>
+    <div id="ton-connect"></div>
+    <!-- <div id="status"></div> -->
 
     <script>
-        const statusElement = document.getElementById('status');
-        const connectButton = document.getElementById('ton-connect');
+        // const statusElement = document.getElementById('status');
+        // const connectButton = document.getElementById('ton-connect');
 
         // Function to update status
-        function updateStatus(message) {
-            statusElement.textContent = message;
-            console.log(message);
-        }
+        // function updateStatus(message) {
+        //     statusElement.textContent = message;
+        //     console.log(message);
+        // }
 
         // Initialize TonConnect
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -144,7 +144,7 @@
         }
 
         // Add click event listener
-        connectButton.addEventListener('click', connectWallet);
+        // connectButton.addEventListener('click', connectWallet);
 
         // Check if running in Telegram WebApp
         if (window.Telegram && window.Telegram.WebApp) {
