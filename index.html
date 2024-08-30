@@ -45,9 +45,6 @@
         // Initialize TonConnect
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
-            items: [
-                {name: 'ton_addr'}
-            ],
             buttonRootId: 'ton-connect'
         });
 
@@ -76,26 +73,26 @@
         };
 
         // Connect wallet function
-        async function connectWallet() {
-            try {
-                updateStatus('Attempting to connect wallet...');
-                const walletConnectionSource = await tonConnectUI.connectWallet();
-                console.log('Available wallets:', walletConnectionSource);
+        // async function connectWallet() {
+        //     try {
+        //         updateStatus('Attempting to connect wallet...');
+        //         const walletConnectionSource = await tonConnectUI.connectWallet();
+        //         console.log('Available wallets:', walletConnectionSource);
 
-                if (walletConnectionSource.length === 0) {
-                    throw new Error('No compatible wallets found');
-                }
+        //         if (walletConnectionSource.length === 0) {
+        //             throw new Error('No compatible wallets found');
+        //         }
 
-                // You can either let the user choose a wallet or select the first one
-                // const selectedWallet = walletConnectionSource[0];
-                // await tonConnect.connect(selectedWallet);
+        //         // You can either let the user choose a wallet or select the first one
+        //         // const selectedWallet = walletConnectionSource[0];
+        //         // await tonConnect.connect(selectedWallet);
 
-                updateStatus('Connection request sent to wallet');
-            } catch (error) {
-                console.error('Failed to connect wallet:', error);
-                updateStatus(`Failed to connect wallet: ${error.message}`);
-            }
-        }
+        //         updateStatus('Connection request sent to wallet');
+        //     } catch (error) {
+        //         console.error('Failed to connect wallet:', error);
+        //         updateStatus(`Failed to connect wallet: ${error.message}`);
+        //     }
+        // }
 
         // Add click event listener
         // connectButton.addEventListener('click', connectWallet);
