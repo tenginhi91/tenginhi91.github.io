@@ -154,8 +154,9 @@
     </div>
 
     <script>
-        const connector = new TonConnect({
-            manifestUrl: 'https://your-manifest-url.json'
+        const connector = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
+            buttonRootId: 'ton-connect'
         });
 
         const connectButton = document.getElementById('connectButton');
