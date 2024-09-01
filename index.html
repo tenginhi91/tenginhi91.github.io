@@ -17,21 +17,57 @@
             margin: 0;
         }
 
-        #connectButton {
-            padding: 10px 20px;
-            font-size: 18px;
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
 
-        #status {
-            margin-top: 20px;
-            font-style: italic;
+        #connectButton {
+            background-color: #4a90e2;
+        }
+
+        #depositButton {
+            background-color: #e27c4a;
+        }
+
+        .balance {
+            background-color: #2c4e3f;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .deposit-options button {
+            background-color: #2c4e3f;
+        }
+
+        #depositAmount {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+
+        #depositAddress {
+            background-color: #2c4e3f;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
         }
     </style>
 </head>
 
 <body>
-    <div id="ton-connect"></div>
+    <!-- <div id="ton-connect"></div>
     <div id="status"></div>
 
     <script>
@@ -72,30 +108,6 @@
             twaReturnUrl: 'https://heinvnstore.github.io'
         };
 
-        // Connect wallet function
-        // async function connectWallet() {
-        //     try {
-        //         updateStatus('Attempting to connect wallet...');
-        //         const walletConnectionSource = await tonConnectUI.connectWallet();
-        //         console.log('Available wallets:', walletConnectionSource);
-
-        //         if (walletConnectionSource.length === 0) {
-        //             throw new Error('No compatible wallets found');
-        //         }
-
-        //         // You can either let the user choose a wallet or select the first one
-        //         // const selectedWallet = walletConnectionSource[0];
-        //         // await tonConnect.connect(selectedWallet);
-
-        //         updateStatus('Connection request sent to wallet');
-        //     } catch (error) {
-        //         console.error('Failed to connect wallet:', error);
-        //         updateStatus(`Failed to connect wallet: ${error.message}`);
-        //     }
-        // }
-
-        // Add click event listener
-        // connectButton.addEventListener('click', connectWallet);
 
         // Check if running in Telegram WebApp
         if (window.Telegram && window.Telegram.WebApp) {
@@ -112,7 +124,86 @@
         tonConnectUI.onConnectionError = (error) => {
             updateStatus(`Connection error: ${error.message}`);
         };
+    </script> -->
+
+    <div class="container">
+        <h1>TON Casino</h1>
+        <div class="balance">
+            <span>Balance: </span>
+            <span id="balanceAmount">0.00000</span> TON
+        </div>
+        <button id="connectButton">TON Connect</button>
+        <div>
+            <h2>Deposit</h2>
+            <p>Select the amount to deposit (Min 0.1 TON)</p>
+            <div class="deposit-options">
+                <button onclick="setAmount(10)">10</button>
+                <button onclick="setAmount(25)">25</button>
+                <button onclick="setAmount(50)">50</button>
+                <button onclick="setAmount(100)">100</button>
+                <button onclick="setAmount(250)">250</button>
+                <button onclick="setAmount(500)">500</button>
+            </div>
+            <input type="number" id="depositAmount" placeholder="Enter deposit amount">
+            <button id="depositButton">Deposit</button>
+        </div>
+        <div>
+            <h3>TON deposit address</h3>
+            <div id="depositAddress"></div>
+        </div>
+    </div>
+
+    <script>
+        const connector = new TonConnect({
+            manifestUrl: 'https://your-manifest-url.json'
+        });
+
+        const connectButton = document.getElementById('connectButton');
+        const balanceAmount = document.getElementById('balanceAmount');
+        const depositButton = document.getElementById('depositButton');
+        const depositAddress = document.getElementById('depositAddress');
+
+        connectButton.addEventListener('click', async () => {
+            try {
+                const wallets = await connector.getWallets();
+                if (wallets.length > 0) {
+                    await connector.connect(wallets[0]);
+                    updateUI();
+                }
+            } catch (error) {
+                console.error('Connection error:', error);
+            }
+        });
+
+        function updateUI() {
+            if (connector.connected) {
+                connectButton.textContent = 'Connected';
+                // Here you would typically fetch and display the actual balance
+                balanceAmount.textContent = '0.00000';
+                depositAddress.textContent = connector.account.address;
+            } else {
+                connectButton.textContent = 'TON Connect';
+                balanceAmount.textContent = '0.00000';
+                depositAddress.textContent = '';
+            }
+        }
+
+        function setAmount(amount) {
+            document.getElementById('depositAmount').value = amount;
+        }
+
+        depositButton.addEventListener('click', () => {
+            const amount = document.getElementById('depositAmount').value;
+            // Here you would implement the deposit logic
+            console.log('Deposit initiated for amount:', amount);
+        });
+
+        // Check initial connection status
+        if (connector.connected) {
+            updateUI();
+        }
     </script>
+
 </body>
 
 </html>
