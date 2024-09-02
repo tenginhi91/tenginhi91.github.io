@@ -293,9 +293,13 @@
     </div>
 
     <script>
-        const connector = TON_CONNECT_UI.TonConnectUI({
+        const tonConnectUI = TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
             buttonRootId: 'ton-connect'
+        });
+        const connector = TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
+            buttonRootId: 'connectButton'
         });
 
         const connectButton = document.getElementById('connectButton');
