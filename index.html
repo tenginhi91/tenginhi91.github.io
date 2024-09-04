@@ -43,7 +43,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>TON Wallet Connection Bien</h1>
+        <h1>TON Wallet Connection Bien 2</h1>
         <button id="connectButton">Connect TON Wallet</button>
         <p id="address"></p>
         <p id="balance"></p>
@@ -64,7 +64,8 @@
                     universalLink: 'https://app.tonkeeper.com/ton-connect',
                     bridgeUrl: 'https://bridge.tonapi.io/bridge'
                 };
-                await connector.connect(walletConnectionSource);
+                const connectedWallet = await connector.connectWallet();
+                console.log(connectedWallet);
                 updateWalletInfo();
             } catch (error) {
                 console.error('Error connecting to wallet:', error);
