@@ -1,345 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect TON Wallet</title>
+    <title>TON Wallet Connection</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #connectButton {
-            background-color: #4a90e2;
-        }
-
-        #depositButton {
-            background-color: #e27c4a;
-        }
-
-        .balance {
-            background-color: #2c4e3f;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .deposit-options button {
-            background-color: #2c4e3f;
-        }
-
-        #depositAmount {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            box-sizing: border-box;
-        }
-
-        #depositAddress {
-            background-color: #2c4e3f;
-            padding: 10px;
-            border-radius: 5px;
-            word-break: break-all;
-        }
-    </style> -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0c1c15;
-            color: white;
-            margin: 0;
-            padding: 20px;
+            background-color: #f0f0f0;
         }
         .container {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .balance {
-            background-color: #1e3a2e;
-            padding: 10px 15px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .balance-icon {
-            width: 20px;
-            height: 20px;
-            background-color: #4caf50;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
             border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #0088CC;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
             font-size: 16px;
+            margin: 4px 2px;
             cursor: pointer;
-            margin-bottom: 10px;
+            border-radius: 5px;
         }
-        #connectButton {
-            background-color: #4a90e2;
-            color: white;
-        }
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .action-buttons button {
-            width: 30%;
-            background-color: #1e3a2e;
-        }
-        .token-select {
-            background-color: #1e3a2e;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .amount-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-            color: white;
-        }
-        .amount-buttons button {
-            background-color: #1e3a2e;
-            margin-bottom: 0;
-            color: white;
-        }
-        .deposit-input {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        .deposit-input input {
-            flex-grow: 1;
-            padding: 15px;
-            background-color: #1e3a2e;
-            border: none;
-            border-radius: 10px 0 0 10px;
-            color: white;
-        }
-        .deposit-input button {
-            width: auto;
-            border-radius: 0 10px 10px 0;
-            background-color: #e27c4a;
-        }
-        .deposit-address {
-            background-color: #1e3a2e;
-            padding: 15px;
-            border-radius: 10px;
-            word-break: break-all;
-        }
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1e3a2e;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-        }
-        .bottom-nav button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 12px;
+        #balance, #address {
+            font-size: 1.2rem;
+            margin-top: 1rem;
         }
     </style>
 </head>
-
 <body>
-    <!-- <div id="ton-connect"></div>
-    <div id="status"></div>
-
-    <script>
-
-        // Function to update status
-        function updateStatus(message) {
-            document.getElementById('status').textContent = message;
-            console.log(message);
-        }
-
-        // Initialize TonConnect
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
-            buttonRootId: 'ton-connect'
-        });
-
-        // Log the current wallet connection status
-        updateStatus(`Initial connection status: ${tonConnectUI.connected}`);
-
-        // Handle wallet connections
-        tonConnectUI.onStatusChange(wallet => {
-            if (wallet) {
-                updateStatus(`Wallet connected: ${wallet.account.address}`);
-                // Send data to Telegram WebApp if available
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.sendData(JSON.stringify({
-                        action: 'wallet_connected',
-                        address: wallet.account.address
-                    }));
-                }
-            } else {
-                updateStatus('Wallet disconnected');
-            }
-        }, console.error);
-
-        // Set TWA return URL
-        tonConnectUI.uiOptions = {
-            twaReturnUrl: 'https://heinvnstore.github.io'
-        };
-
-
-        // Check if running in Telegram WebApp
-        if (window.Telegram && window.Telegram.WebApp) {
-            updateStatus('Running in Telegram WebApp');
-        } else {
-            updateStatus('Not running in Telegram WebApp');
-        }
-
-        // Error handling
-        tonConnectUI.onConnectionRestored = () => {
-            updateStatus('Connection restored');
-        };
-
-        tonConnectUI.onConnectionError = (error) => {
-            updateStatus(`Connection error: ${error.message}`);
-        };
-    </script> -->
-    <div id="ton-connect"></div>
-
     <div class="container">
-        <div class="header">
-            <div class="logo">KING CASINO</div>
-            <div class="balance">
-                <div class="balance-icon"></div>
-                <span id="balanceAmount">0.00000</span>
-            </div>
-        </div>
-
-
-        <button id="connectButton">TON Connect 2</button>
-
-        <div class="action-buttons">
-            <button>Deposit</button>
-            <button>Withdraw</button>
-            <button>Buy crypto</button>
-        </div>
-
-        <div class="token-select">
-            <p>Select the token to deposit (Min 0.1 TON)</p>
-            <div>TON ▼</div>
-        </div>
-
-        <div class="amount-buttons">
-            <button onclick="setAmount(10)">10</button>
-            <button onclick="setAmount(25)">25</button>
-            <button onclick="setAmount(50)">50</button>
-            <button onclick="setAmount(100)">100</button>
-            <button onclick="setAmount(250)">250</button>
-            <button onclick="setAmount(500)">500</button>
-        </div>
-
-        <div class="deposit-input">
-            <input type="number" id="depositAmount" placeholder="0">
-            <button>Deposit</button>
-        </div>
-
-        <p>TON deposit address</p>
-        <div class="deposit-address" id="depositAddress"></div>
-    </div>
-
-    <div class="bottom-nav">
-        <button>MENU</button>
-        <button>HOME</button>
-        <button>CASINO</button>
-        <button>SPORTS</button>
-        <button>WALLET</button>
+        <h1>TON Wallet Connection</h1>
+        <button id="connectButton">Connect TON Wallet</button>
+        <p id="address"></p>
+        <p id="balance"></p>
     </div>
 
     <script>
-        const tonConnectUI = TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
-            buttonRootId: 'ton-connect'
-        });
-        const connector = TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json',
-            buttonRootId: 'connectButton'
-        });
-
         const connectButton = document.getElementById('connectButton');
-        const balanceAmount = document.getElementById('balanceAmount');
-        const depositAddress = document.getElementById('depositAddress');
+        const addressElement = document.getElementById('address');
+        const balanceElement = document.getElementById('balance');
 
-        connectButton.addEventListener('click', async () => {
+        const connector = TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://tenginhi91.github.io/tonconnect-manifest.json'
+        });
+
+        async function connectWallet() {
             try {
-                const wallets = await connector.getWallets();
-                if (wallets.length > 0) {
-                    await connector.connect(wallets[0]);
-                    updateUI();
+                const walletConnectionSource = {
+                    universalLink: 'https://app.tonkeeper.com/ton-connect',
+                    bridgeUrl: 'https://bridge.tonapi.io/bridge'
+                };
+                await connector.connect(walletConnectionSource);
+                updateWalletInfo();
+            } catch (error) {
+                console.error('Error connecting to wallet:', error);
+                alert('Error connecting to wallet. Please make sure you have a TON wallet installed.');
+            }
+        }
+
+        async function updateWalletInfo() {
+            const walletInfo = connector.wallet;
+            if (walletInfo) {
+                addressElement.textContent = `Address: ${walletInfo.account.address}`;
+                connectButton.textContent = 'Connected';
+                connectButton.disabled = true;
+                fetchBalance(walletInfo.account.address);
+            }
+        }
+
+        async function fetchBalance(address) {
+            try {
+                const response = await fetch(`https://toncenter.com/api/v2/getAddressBalance?address=${address}`);
+                const data = await response.json();
+                if (data.ok) {
+                    const balance = parseInt(data.result) / 1e9; // Convert from nanoTON to TON
+                    balanceElement.textContent = `Balance: ${balance.toFixed(4)} TON`;
+                } else {
+                    balanceElement.textContent = 'Error fetching balance';
                 }
             } catch (error) {
-                console.error('Connection error:', error);
+                console.error('Error fetching balance:', error);
+                balanceElement.textContent = 'Error fetching balance';
+            }
+        }
+
+        connector.onStatusChange(async (wallet) => {
+            if (wallet) {
+                await updateWalletInfo();
+            } else {
+                addressElement.textContent = '';
+                balanceElement.textContent = '';
+                connectButton.textContent = 'Connect TON Wallet';
+                connectButton.disabled = false;
             }
         });
 
-        function updateUI() {
-            if (connector.connected) {
-                connectButton.textContent = 'Connected';
-                balanceAmount.textContent = '0.00000';
-                depositAddress.textContent = connector.account.address;
-            } else {
-                connectButton.textContent = 'TON Connect';
-                balanceAmount.textContent = '0.00000';
-                depositAddress.textContent = '';
-            }
-        }
-
-        function setAmount(amount) {
-            document.getElementById('depositAmount').value = amount;
-        }
-
-        // Check initial connection status
-        if (connector.connected) {
-            updateUI();
-        }
+        connectButton.addEventListener('click', connectWallet);
     </script>
-
 </body>
-
 </html>
